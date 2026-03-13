@@ -25,7 +25,7 @@ Speichert ein Produkt.
 - Keine
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 #### `load_product(product_id: str) -> Optional[Product]`
 Lädt ein einzelnes Produkt.
@@ -37,7 +37,7 @@ Lädt ein einzelnes Produkt.
 - `Product` oder `None` falls nicht gefunden
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 #### `load_all_products() -> Dict[str, Product]`
 Lädt alle Produkte.
@@ -46,7 +46,7 @@ Lädt alle Produkte.
 - Dictionary mit Product-IDs als Keys
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 #### `delete_product(product_id: str) -> None`
 Löscht ein Produkt.
@@ -58,7 +58,7 @@ Löscht ein Produkt.
 - Keine (ignoriert unbekannte IDs)
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 #### `save_movement(movement: Movement) -> None`
 Speichert eine Lagerbewegung.
@@ -67,7 +67,7 @@ Speichert eine Lagerbewegung.
 - `movement`: Movement-Instanz
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 #### `load_movements() -> List[Movement]`
 Lädt alle Lagerbewegungen.
@@ -76,7 +76,7 @@ Lädt alle Lagerbewegungen.
 - Liste von Movement-Objekten
 
 **Implementierungen:**
-- `InMemoryRepository` (v0.1)
+- `InMemoryRepository` (v0.2)
 
 ---
 
@@ -96,7 +96,7 @@ Generiert einen Lagerbestandsbericht.
 - Formatierter String-Bericht
 
 **Implementierungen:**
-- `ConsoleReportAdapter` (v0.1)
+- `ConsoleReportAdapter` (v0.2)
 
 #### `generate_movement_report() -> str`
 Generiert ein Bewegungsprotokoll.
@@ -105,7 +105,7 @@ Generiert ein Bewegungsprotokoll.
 - Formatierter String-Bericht
 
 **Implementierungen:**
-- `ConsoleReportAdapter` (v0.1)
+- `ConsoleReportAdapter` (v0.2)
 
 ---
 
@@ -187,7 +187,12 @@ Berechnet den Gesamtwert des Lagers.
 
 ## 4. Domain Models
 
+*Hinweis: Der nachfolgende Abschnitt beschreibt den aktuellen Stand der Implementierung (v0.2).* 
+
+
 ### Product
+
+**Hinweis:** Die Klasse ist vollständig implementiert. Änderungen werden in v0.3 dokumentiert.
 
 **Attribute:**
 - `id: str` - Eindeutige ID
@@ -202,10 +207,15 @@ Berechnet den Gesamtwert des Lagers.
 - `notes: str` - Anmerkungen
 
 **Methoden:**
+
+**Exceptions:**
+- `ValueError` bei negativer Menge oder Preis
 - `update_quantity(amount: int) -> None` - Bestand ändern
 - `get_total_value() -> float` - Gesamtwert berechnen
 
 ### Movement
+
+**Hinweis:** derzeit werden nur Typen "IN" und "OUT" verwendet. Der Eintrag "CORRECTION" ist geplant, aber noch nicht aktiv.
 
 **Attribute:**
 - `id: str` - Eindeutige Bewegungs-ID
@@ -219,6 +229,35 @@ Berechnet den Gesamtwert des Lagers.
 
 ---
 
+## 5. UI-Komponenten
+
+**Verantwortlich:** Rolle 4 (GUI)
+
+### WarehouseMainWindow
+Fenster mit Tab-Widget.
+
+**Methoden / Schnittstellen:**
+- `show_products(products: Dict[str, Product]) -> None` – zeigt Liste der Produkte
+- `show_movements(movements: List[Movement]) -> None` – zeigt Bewegungsprotokoll (aktuell leer)
+- `show_inventory_report(report: str) -> None` – präsentiert Bestandsbericht
+- `show_movement_report(report: str) -> None` – präsentiert Bewegungsbericht
+- `get_new_product_data() -> Dict` – liest Benutzereingaben aus Produktdialog
+- `get_edit_product_data(product_id: str) -> Dict` – (noch nicht implementiert)
+- `delete_product_request(product_id: str) -> None` – wird angestoßen, derzeit Stub (muss von Role 4 implementiert)
+
+**Exceptions:**
+- Keine – GUI steuert interne Validierungen.
+
+### ProductDialogWindow
+Dialog für Produktdaten.
+
+**Methoden:**
+- `open(product: Optional[Product] = None) -> Dict` – öffnet Dialog; gibt Eingaben zurück oder `None` bei Abbruch
+
+**Hinweis:** Lösch- und Bearbeiten-Funktionen sind als TODO markiert.
+
+---
+
 ## Versionshistorie der Contracts
 
 ### v0.1 (2025-01-20)
@@ -227,6 +266,12 @@ Berechnet den Gesamtwert des Lagers.
 - WarehouseService: Kern-Use-Cases
 - Product: Basis-Domain-Model
 - Movement: Lagerbewegungen-Protokoll
+
+### v0.2 (2026-03-13)
+- Dokumentation an aktuelles Walking-Skeleton angepasst
+- UI-Komponenten hinzugefügt und beschrieben
+- Fehlerbehandlungen für Service-Methoden spezifiziert
+- Versionsnummern angehoben
 
 ---
 
