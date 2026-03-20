@@ -1,0 +1,50 @@
+[
+  {
+    "id": "BR001",
+    "name": "Vollkornbrot",
+    "description": "Frisch gebackenes Vollkornbrot, 750g",
+    "price": 2.50,
+    "quantity": 25,
+    "sku": "BROT-VK-001",
+    "category": "Backwaren",
+    "created_at": "2026-03-20T08:00:00",
+    "updated_at": "2026-03-20T08:00:00",
+    "notes": "Laktosefrei"
+  },
+  {
+    "id": "BR002",
+    "name": "Sonnenblumenkernbrot",
+    "description": "Saftiges Brot mit Sonnenblumenkernen, 800g",
+    "price": 3.20,
+    "quantity": 18,
+    "sku": "BROT-SK-002",
+    "category": "Backwaren",
+    "created_at": "2026-03-20T08:15:00",
+    "updated_at": "2026-03-20T08:15:00",
+    "notes": "Glutenhaltig"
+  },
+  {
+    "id": "KR001",
+    "name": "Kornbrötchen",
+    "description": "Knusprige Mehrkornbrötchen, 6er-Pack",
+    "price": 2.90,
+    "quantity": 40,
+    "sku": "BROT-KR-006",
+    "category": "Backwaren",
+    "created_at": "2026-03-20T08:30:00",
+    "updated_at": "2026-03-20T08:30:00",
+    "notes": "Am besten warm servieren"
+  },
+  {
+    "id": "K0S01",
+    "name": "Käsekuchenstück",
+    "description": "Frisches Käsekuchenstück, 120g",
+    "price": 4.80,
+    "quantity": 12,
+    "sku": "TORT-KA-001",
+    "category": "Konditorei",
+    "created_at": "2026-03-20T08:45:00",
+    "updated_at": "2026-03-20T08:45:00",
+    "notes": "Verfallsdatum: 2 Tage"
+  }
+]
