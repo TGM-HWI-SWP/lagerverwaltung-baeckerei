@@ -4,27 +4,16 @@ Persönliches Changelog für [ZwanzingerLuis], Rolle: [Rolle1]
 
 ---
 
-## [v0.1] - 2025-01-20
+## [v0.1] - 20.03.2026
 
 ### Implementiert
-- [Feature/Fix 1]
-- [Feature/Fix 2]
-- [Feature/Fix 3]
+- Dummy Daten
+- Changelogs hinzugefügt
 
-### Tests geschrieben
-- test_[name 1]
-- test_[name 2]
-
-### Commits
-```
-- abc1234 Feat: [Beschreibung]
-- def5678 Test: [Beschreibung]
-- ghi9012 Docs: [Beschreibung]
-```
 
 ### Mergekonflikt(e)
-- [Datei]: [Kurzbeschreibung und Lösung]
-
+- [Problem] Beim Pullen und commiten gab es fehler, da der Name des Projektes geändert wurde.
+- [Lösung] In [lagerverwaltung-backerei\.git\config] den Namen korrigieren und mit: [git pull --allow-unrelated-histories] richtig pullen. 
 ---
 
 ## [v0.2] - [Datum]
