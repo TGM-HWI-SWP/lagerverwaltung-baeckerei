@@ -4,7 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "projekt-verwaltung"
+<<<<<<< HEAD
 version = "0.2.0"
+=======
+version = "0.1.0"
+>>>>>>> cd6bd54af021fb19f6bd34378946442937d285ee
 description = "Verwaltungssoftware für Lagerverwaltung/Produktmanagement"
 readme = "README.md"
 requires-python = ">=3.10"
