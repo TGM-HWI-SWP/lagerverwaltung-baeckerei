@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/y3rD5eCg)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=22594933&assignment_repo_type=AssignmentRepo)
-=======
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Pc_A4vY0)
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=22780664&assignment_repo_type=AssignmentRepo)
->>>>>>> cd6bd54af021fb19f6bd34378946442937d285ee
 # Lagerverwaltungssystem - Projektvorlage
 
 Vollständige Projektvorlage für ein professionelles Softwareentwicklungs- und Projektmanagement-Projekt. Dieses Projekt dient als Basis für die Entwicklung einer Lagerverwaltungs- oder Produktverwaltungssoftware mit professionellen Vorgaben.
@@ -58,6 +53,32 @@ projekt/
 - Python 3.10+
 - pip oder Poetry
 - (Optional) Docker & Docker Compose für Container-Betrieb
+
+### Entwicklungsumgebung aufbauen
+
+```bash
+# 1. Repository klonen
+git clone <repository-url>
+cd projekt
+
+# 2. Virtuelle Umgebung erstellen (optional, aber empfohlen)
+python -m venv venv
+
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# 3. Dependencies installieren (Web + Tests)
+pip install -e ".[web]"
+
+# 3b. Für GUI-Entwicklung (PyQt6 lokal):
+pip install -e ".[gui]"
+
+# 4. Tests ausführen
+pytest
+
+# 5. Flask Web-App starte- (Optional) Docker & Docker Compose für Container-Betrieb
 
 ### Entwicklungsumgebung aufbauen
 
@@ -356,3 +377,44 @@ Schulprojekt - TGM
 ## Kontakt
 
 Projektverantwortung: [Rolle 1 Person]
+<<<<<<< HEAD
+=======
+
+<<<<<<< Updated upstream
+halli hallo 
+>>>>>>> cd6bd54af021fb19f6bd34378946442937d285ee
+=======
+ 
+>>>>>>> Stashed changes
+Laptop",
+    price=1200.0,
+    category="Elektronik",
+    initial_quantity=5
+)
+```
+
+### Bestand aktualisieren
+```python
+service.add_to_stock("P001", 3, reason="Neuer Einkauf", user="Max Mustermann")
+service.remove_from_stock("P001", 2, reason="Verkauf", user="Anna Schmidt")
+```
+
+### Lagerbestandswert berechnen
+```python
+total_value = service.get_total_inventory_value()
+print(f"Gesamtwert: {total_value:.2f} €")
+```
+
+## Known Issues
+
+Siehe `docs/known_issues.md`
+
+## Lizenz
+
+Schulprojekt - TGM
+
+## Kontakt
+
+Projektverantwortung: [Rolle 1 Person]
+
+ 
