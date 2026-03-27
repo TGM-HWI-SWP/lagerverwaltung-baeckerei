@@ -1,10 +1,12 @@
 """Repository Adapter - In-Memory und persistente Implementierungen"""
 
+import os
 from typing import Dict, List, Optional
 
 from ..domain.product import Product
 from ..domain.warehouse import Movement
 from ..ports import RepositoryPort
+from .mongo_repository import MongoRepository
 
 
 class InMemoryRepository(RepositoryPort):
@@ -56,5 +58,9 @@ class RepositoryFactory:
         """
         if repository_type == "memory":
             return InMemoryRepository()
+        elif repository_type == "mongodb":
+            mongo_uri = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
+            mongo_db = os.getenv("MONGO_DB", "lagerverwaltung")
+            return MongoRepository(uri=mongo_uri, db_name=mongo_db)
         else:
             raise ValueError(f"Unbekannter Repository-Typ: {repository_type}")

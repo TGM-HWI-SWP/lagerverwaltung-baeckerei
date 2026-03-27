@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Lagerverwaltung Bäckerei{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Lagerverwaltung Bäckerei</h1>
+      <nav>
+        <a href="{{ url_for('public.home') }}">Startseite</a>
+        <a href="{{ url_for('public.about') }}">Über uns</a>
+        <a href="{{ url_for('public.product_list') }}">Produkte</a>
+        <a href="{{ url_for('public.order') }}">Bestellen</a>
+        <a href="{{ url_for('admin.login') }}">Admin</a>
+      </nav>
+    </header>
+
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <p>&copy; {{ current_year | default(2026) }} Bäckerei Lagerverwaltung</p>
+    </footer>
+  </body>
+</html>

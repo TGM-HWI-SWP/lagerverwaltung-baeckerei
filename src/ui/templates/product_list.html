@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Produktübersicht{% endblock %}
+{% block content %}
+<h2>Produktübersicht</h2>
+{% if products %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Kategorie</th>
+      <th>Bestand</th>
+      <th>Preis (€)</th>
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products.values() %}
+    <tr>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.quantity }}</td>
+      <td>{{ "%.2f" | format(product.price) }}</td>
+      <td><a href="{{ url_for('public.product_detail', product_id=product.id) }}">Details</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Derzeit sind keine Produkte verfügbar.</p>
+{% endif %}
+{% endblock %}

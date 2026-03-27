@@ -57,6 +57,7 @@ projekt/
 ### Voraussetzungen
 - Python 3.10+
 - pip oder Poetry
+- (Optional) Docker & Docker Compose für Container-Betrieb
 
 ### Entwicklungsumgebung aufbauen
 
@@ -73,14 +74,19 @@ venv\Scripts\activate
 # Linux/Mac:
 source venv/bin/activate
 
-# 3. Dependencies installieren
-pip install -e .
-pip install -e ".[dev]"
+# 3. Dependencies installieren (Web + Tests)
+pip install -e ".[web]"
+
+# 3b. Für GUI-Entwicklung (PyQt6 lokal):
+pip install -e ".[gui]"
 
 # 4. Tests ausführen
 pytest
 
-# 5. GUI starten
+# 5. Flask Web-App starten
+python -m src.ui.flask_app
+
+# 6. PyQt6 Desktop-App starten (falls installiert)
 python -m src.ui
 ```
 
@@ -194,6 +200,57 @@ pytest tests/integration/ -v
 pytest --cov=src tests/
 ```
 
+## GUI starten
+
+### PyQt6 Native App (bestehende Implementierung)
+```bash
+python -m src.ui
+```
+
+### Flask Web-App (neu, in `src/ui/`)
+```bash
+python -m src.ui
+```
+
+## Docker Setup
+
+### Docker Compose (empfohlen: UI + MongoDB)
+
+```bash
+# Build + Start
+docker compose up --build
+
+# Hintergrund:
+docker compose up -d --build
+
+# Logs anschauen:
+docker compose logs -f app
+
+# Stop:
+docker compose down
+```
+
+- UI: `http://localhost:5000`
+- Admin: `http://localhost:5000/admin/login`
+- Demo-Credentials: `admin` / `admin123`
+
+### Docker Einzelcontainer (Flask Web-App, default)
+
+```bash
+docker build -t lagerverwaltung-ui .
+docker run --rm -p 5000:5000 lagerverwaltung-ui
+```
+
+### Docker mit PyQt6 Desktop-App (optional)
+
+```bash
+# Build mit GUI-Flag
+docker build --build-arg GUI=true -t lagerverwaltung-gui .
+
+# Nur auf Linux mit X11-Forwarding:
+docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix lagerverwaltung-gui
+```
+
 ## Reports
 
 Reports sind eigenständige Komponenten, die:
@@ -299,8 +356,3 @@ Schulprojekt - TGM
 ## Kontakt
 
 Projektverantwortung: [Rolle 1 Person]
-<<<<<<< HEAD
-=======
-
-halli hallo 
->>>>>>> cd6bd54af021fb19f6bd34378946442937d285ee

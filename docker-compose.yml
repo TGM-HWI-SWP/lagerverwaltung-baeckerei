@@ -1,0 +1,27 @@
+
+services:
+  app:
+    build: .
+    container_name: lagerverwaltung_ui
+    ports:
+      - "5000:5000"
+    environment:
+      - REPOSITORY_TYPE=mongodb
+      - MONGO_URI=mongodb://mongo:27017/
+      - MONGO_DB=lagerverwaltung
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    container_name: lagerverwaltung_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<h2>Admin Login</h2>
+<form method="post" class="form-grid">
+  <label for="username">Benutzer</label>
+  <input type="text" id="username" name="username" placeholder="admin" required />
+
+  <label for="password">Passwort</label>
+  <input type="password" id="password" name="password" placeholder="admin123" required />
+
+  <button class="btn" type="submit">Anmelden</button>
+</form>
+{% endblock %}

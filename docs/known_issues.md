@@ -32,10 +32,17 @@
 ## Bekannte Limitationen
 
 ### Features, die absichtlich nicht implementiert sind
-- Benutzer-Authentifizierung (v0.1)
-- Datenbank-Persistenz (erst ab v0.2)
-- Grafische Reports (erst ab v0.4)
+- Produktionsreifes Login (nur Demo-Admin im Flask-UI: admin/admin123)
+- Persistente Datenbank (Flask-UI currently uses InMemoryRepository)
+- Email-Bestellbestätigung
 - Mehrsprachigkeit
+
+### Aktuelle Einschränkungen in der neuen Flask GUI
+- InMemoryRepository ist flüchtig (neue Startseite setzt Demo-Daten, Daten gehen bei Prozessende verloren)
+- Admin-Berechtigungsprüfung ist minimalistisch (kein CSRF, kein OAuth)
+- Concurrency / race conditions nicht abgedeckt
+- Docker-Compose ist aufgebaut, aber Migration der Demo-Daten in MongoDB erfolgt erst nach Phase 2
+- PyQt6 Desktop-App läuft nicht in Docker (fehlende X11/Display) – nutze `.` (lokal) oder `Dockerfile.gui` mit X11-Forwarding
 
 ### Performance-Limitationen
 - In-Memory Repository: max. ~100.000 Produkte pro Session

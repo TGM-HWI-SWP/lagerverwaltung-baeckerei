@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Bestellübersicht{% endblock %}
+{% block content %}
+<h2>Bestellübersicht / Lagerbewegungen</h2>
+{% if movements %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Produkt</th>
+      <th>Typ</th>
+      <th>Änderung</th>
+      <th>Grund</th>
+      <th>Benutzer</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for move in movements %}
+    <tr>
+      <td>{{ move.id }}</td>
+      <td>{{ move.product_name }}</td>
+      <td>{{ move.movement_type }}</td>
+      <td>{{ move.quantity_change }}</td>
+      <td>{{ move.reason }}</td>
+      <td>{{ move.performed_by }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Bewegungen vorhanden.</p>
+{% endif %}
+<a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück</a>
+{% endblock %}

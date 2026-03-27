@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Statistik{% endblock %}
+{% block content %}
+<h2>Statistik</h2>
+<ul class="stats-list">
+  <li>Gesamtanzahl Einheiten: {{ total_units }}</li>
+  <li>Gesamtwert Lager: {{ "%.2f" | format(total_value) }} €</li>
+</ul>
+<a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück</a>
+{% endblock %}

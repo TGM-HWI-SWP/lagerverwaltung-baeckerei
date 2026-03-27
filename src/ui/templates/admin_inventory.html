@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Lagerbestand{% endblock %}
+{% block content %}
+<h2>Interner Lagerbestand</h2>
+{% if products %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Kategorie</th>
+      <th>Bestand</th>
+      <th>Preis</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products.values() %}
+    <tr>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.quantity }}</td>
+      <td>{{ "%.2f" | format(product.price) }} €</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Produkte im Lager.</p>
+{% endif %}
+<a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück</a>
+{% endblock %}

@@ -2,7 +2,25 @@
 
 ## Architektur-Übersicht
 
-Das Projekt folgt der **Port-Adapter-Architektur** (Hexagonal Architecture) für maximale Testbarkeit und Wartbarkeit.
+Das Projekt folgt der **Port-Adapter-Architektur** (Hexagonal Architecture) mit Unterstützung für mehrere UI-Optionen (Web + Desktop).
+
+## Dependency-Struktur (pyproject.toml)
+
+### Basis-Dependencies (immer erforderlich)
+- `Flask>=2.3.0` – Web-Framework
+- `pymongo>=4.7.0` – MongoDB-Treiber
+- `tinydb>=4.8.0` – Alternative In-Memory DB
+
+### Optional: `[gui]`
+- `PyQt6>=6.6.0` – Desktop-GUI (Qt6)
+- **Nur für lokale native App nötig, nicht für Docker Web-Container**
+
+### Optional: `[web]`
+- Beinhaltet `Flask`, `pymongo`, `pytest`
+- Für Docker Compose & Web-Betrieb
+
+### Optional: `[dev]`
+- Linting, Testing, Type Checking
 
 ## Schichten-Modell
 
@@ -138,9 +156,9 @@ class ReportPort(ABC):
 
 ### 5. UI Layer (`src/ui/`)
 
-**Verantwortung:** Benutzeroberfläche (PyQt6)
+**Verantwortung:** Benutzeroberfläche (PyQt6 + Flask)
 
-#### `WarehouseMainWindow`
+#### `WarehouseMainWindow` (PyQt6)
 - **Framework:** PyQt6
 - **Layout:** Tab-basiert
   - Tab 1: Produktverwaltung (Tabelle, Buttons)
@@ -150,6 +168,13 @@ class ReportPort(ABC):
 #### `ProductDialogWindow`
 - **Typ:** Modal Dialog
 - **Felder:** ID, Name, Beschreibung, Preis, Menge, Kategorie
+
+#### `src/ui/flask_app.py` und `src/ui/routes/`
+- **Typ:** Web-UI (Flask)
+- **Routen:** Startseite, Über uns, Produktübersicht, Produktdetail, Bestellprozess, Admin-Login, Dashboard, Bestellübersicht, Lagerbestand, Statistik
+- **Templating:** Jinja2 unter `src/ui/templates/`
+- **Static Assets:** CSS unter `src/ui/static/css/style.css`
+- **Service-Anbindung:** `WarehouseService` über `RepositoryFactory.create_repository('memory')` (für v0.1 als InMemory-Placeholder)
 
 ### 6. Tests (`tests/`)
 
