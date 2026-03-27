@@ -4,28 +4,32 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "projekt-verwaltung"
-<<<<<<< HEAD
-version = "0.2.0"
-=======
 version = "0.1.0"
->>>>>>> cd6bd54af021fb19f6bd34378946442937d285ee
 description = "Verwaltungssoftware für Lagerverwaltung/Produktmanagement"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "PyQt6>=6.6.0",
+    "Flask>=2.3.0",
+    "pymongo>=4.7.0",
     "tinydb>=4.8.0",
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
 ]
 
 [project.optional-dependencies]
+gui = [
+    "PyQt6>=6.6.0",
+]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "black>=23.9.0",
     "flake8>=6.1.0",
     "mypy>=1.5.0",
+]
+web = [
+    "Flask>=2.3.0",
+    "pymongo>=4.7.0",
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
 ]
 
 [tool.setuptools]
