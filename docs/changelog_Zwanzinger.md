@@ -16,19 +16,15 @@ Persönliches Changelog für [ZwanzingerLuis], Rolle: [Rolle1]
 - [Lösung] In [lagerverwaltung-backerei\.git\config] den Namen korrigieren und mit: [git pull --allow-unrelated-histories] richtig pullen. 
 ---
 
-## [v0.2] - [Datum]
+## [v0.2] - [27.03.2026]
 
 ### Implementiert
-- [Feature/Fix 1]
-- [Feature/Fix 2]
+- Unterstützung der Mitarbeiter
+    - helfen Docker Desktop zum laufen zu bringen
+    - helfen beim commiten 
+    - bei import problemen geholfen in test_movement.py
+- gui getestet
 
-### Tests geschrieben
-- test_[name 1]
-
-### Commits
-```
-- jkl3456 Feat: [Beschreibung]
-```
 
 ### Mergekonflikt(e)
 - Keine
