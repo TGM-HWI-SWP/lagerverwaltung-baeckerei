@@ -1,33 +1,100 @@
 {% extends "base.html" %}
-{% block title %}Produktübersicht{% endblock %}
+{% block title %}Unsere Produkte - Boulangerie Parfait{% endblock %}
 {% block content %}
-<h2>Produktübersicht</h2>
-{% if products %}
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Kategorie</th>
-      <th>Bestand</th>
-      <th>Preis (€)</th>
-      <th>Aktionen</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in products.values() %}
-    <tr>
-      <td>{{ product.id }}</td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.category }}</td>
-      <td>{{ product.quantity }}</td>
-      <td>{{ "%.2f" | format(product.price) }}</td>
-      <td><a href="{{ url_for('public.product_detail', product_id=product.id) }}">Details</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% else %}
-<p>Derzeit sind keine Produkte verfügbar.</p>
-{% endif %}
+<section class="products-section">
+  <h2>Unsere feinen Backwaren</h2>
+  <p>Entdecken Sie unser Sortiment an frisch gebackenen Köstlichkeiten – jeden Tag mit Liebe zubereitet.</p>
+
+  <div class="products-grid">
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/hausbrot.jpg') }}" alt="Hausbrot rustikal" class="product-image">
+      <div class="product-info">
+        <h3>Hausbrot rustikal</h3>
+        <p>Kräftige Kruste, saftige Krume und ein vollmundiger Geschmack – perfekt für jeden Tag.</p>
+        <span class="price">€ 3,50</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/baguette.jpg') }}" alt="Baguette klassisch" class="product-image">
+      <div class="product-info">
+        <h3>Baguette klassisch</h3>
+        <p>Knusprig, luftig und goldbraun gebacken – ein echter Klassiker.</p>
+        <span class="price">€ 2,80</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/buttercroissant.jpg') }}" alt="Buttercroissant" class="product-image">
+      <div class="product-info">
+        <h3>Buttercroissant</h3>
+        <p>Zart, flaumig und herrlich buttrig – ideal zum Frühstück.</p>
+        <span class="price">€ 1,90</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/schoko-croissant.jpg') }}" alt="Schoko-Croissant" class="product-image">
+      <div class="product-info">
+        <h3>Schoko-Croissant</h3>
+        <p>Feiner Blätterteig mit zartschmelzender Schokolade gefüllt.</p>
+        <span class="price">€ 2,20</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/dinkelbrot.jpg') }}" alt="Dinkelbrot mild" class="product-image">
+      <div class="product-info">
+        <h3>Dinkelbrot mild</h3>
+        <p>Locker, leicht nussig und besonders bekömmlich.</p>
+        <span class="price">€ 4,20</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/koernerweckerl.jpg') }}" alt="Körnerweckerl" class="product-image">
+      <div class="product-info">
+        <h3>Körnerweckerl</h3>
+        <p>Knusprig gebacken mit einer feinen Mischung aus Saaten.</p>
+        <span class="price">€ 1,50</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/brioche.jpg') }}" alt="Brioche weich" class="product-image">
+      <div class="product-info">
+        <h3>Brioche weich</h3>
+        <p>Leicht süß, besonders flaumig und perfekt zum Kaffee.</p>
+        <span class="price">€ 2,50</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/apfeltarte.jpg') }}" alt="Apfeltarte" class="product-image">
+      <div class="product-info">
+        <h3>Apfeltarte</h3>
+        <p>Fruchtig, leicht süß und mit feinem Mürbteig gebacken.</p>
+        <span class="price">€ 3,80</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/vanille-eclair.jpg') }}" alt="Vanille Éclair" class="product-image">
+      <div class="product-info">
+        <h3>Vanille Éclair</h3>
+        <p>Luftiges Gebäck mit cremiger Vanillefüllung.</p>
+        <span class="price">€ 2,90</span>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <img src="{{ url_for('static', filename='images/jausensemmel.jpg') }}" alt="Jausensemmel" class="product-image">
+      <div class="product-info">
+        <h3>Jausensemmel</h3>
+        <p>Klassisch, vielseitig und ideal für jede Pause.</p>
+        <span class="price">€ 1,20</span>
+      </div>
+    </article>
+  </div>
+</section>
 {% endblock %}

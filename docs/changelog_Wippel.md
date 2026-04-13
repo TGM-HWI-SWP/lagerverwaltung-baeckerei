@@ -1,29 +1,29 @@
-# Changelog - [Name]
+# Changelog - [Sofia Wippel]
 
-Persönliches Changelog für [Name], Rolle: [Rollenbezeichnung]
+Persönliches Changelog für [Sofia Wippel], Rolle: [GUI & Interaktion ]
 
 ---
 
-## [v0.1] - 2025-01-20
+## [v0.1] - 2026-03-27
 
 ### Implementiert
-- [Feature/Fix 1]
-- [Feature/Fix 2]
-- [Feature/Fix 3]
+- GUI Grundgerüst mit Flask und Qt
+- Docker Container Setup
+- Verlinkungen zwischen den Seiten
+- Responsive Design mit CSS
+- Admin Dashboard Struktur
+- Produktverwaltung UI
 
 ### Tests geschrieben
-- test_[name 1]
-- test_[name 2]
+- Noch keine Tests geschrieben
 
 ### Commits
 ```
-- abc1234 Feat: [Beschreibung]
-- def5678 Test: [Beschreibung]
-- ghi9012 Docs: [Beschreibung]
+- ede7975 Feat: Grundgerüst der GUI fertig inkl. laufendem Docker
 ```
 
 ### Mergekonflikt(e)
-- [Datei]: [Kurzbeschreibung und Lösung]
+- README.md: Merge Konflikt gelöst
 
 ---
 

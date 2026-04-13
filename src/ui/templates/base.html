@@ -3,12 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Lagerverwaltung Bäckerei{% endblock %}</title>
+    <title>{% block title %}Boulangerie Parfait{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   </head>
   <body>
     <header class="site-header">
-      <h1>Lagerverwaltung Bäckerei</h1>
+      <div class="header-content">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Boulangerie Parfait Logo" class="logo">
+        <div class="brand">
+          <h1>Boulangerie Parfait</h1>
+          <p class="slogan">Fein gebacken. Mit Liebe serviert.</p>
+        </div>
+      </div>
       <nav>
         <a href="{{ url_for('public.home') }}">Startseite</a>
         <a href="{{ url_for('public.about') }}">Über uns</a>
@@ -33,7 +42,27 @@
     </main>
 
     <footer>
-      <p>&copy; {{ current_year | default(2026) }} Bäckerei Lagerverwaltung</p>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Kontakt</h4>
+          <p>Bäckerstraße 12<br>
+          1010 Wien<br>
+          Tel: 01 234 5678<br>
+          Email: info@boulangerie-parfait.at</p>
+        </div>
+        <div class="footer-section">
+          <h4>Öffnungszeiten</h4>
+          <p>Mo-Fr: 6:00 - 18:00<br>
+          Sa: 6:00 - 16:00<br>
+          So: Geschlossen</p>
+        </div>
+        <div class="footer-section">
+          <h4>Folgen Sie uns</h4>
+          <a href="#" class="social-link">Facebook</a>
+          <a href="#" class="social-link">Instagram</a>
+        </div>
+      </div>
+      <p>&copy; {{ current_year | default(2026) }} Boulangerie Parfait. Fein gebacken. Mit Liebe serviert.</p>
     </footer>
   </body>
 </html>
