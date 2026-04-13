@@ -1,5 +1,7 @@
 """Tests für MovementReport und Movement-Klassen"""
 
+# Immer ausführen mit "python -m tests.unit.test_movement_report"
+
 import pytest
 from datetime import datetime, timedelta
 from src.reports.movement import Movement, MovementType, MovementReport
