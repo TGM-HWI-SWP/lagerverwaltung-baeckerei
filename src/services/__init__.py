@@ -58,6 +58,7 @@ class WarehouseService:
             performed_by=user,
         )
         self.repository.save_movement(movement)
+        self.warehouse.record_movement(movement)
 
     def remove_from_stock(
         self, product_id: str, quantity: int, reason: str = "", user: str = "system"
@@ -85,6 +86,7 @@ class WarehouseService:
             performed_by=user,
         )
         self.repository.save_movement(movement)
+        self.warehouse.record_movement(movement)
 
     def get_product(self, product_id: str) -> Optional[Product]:
         """Produkt abrufen"""

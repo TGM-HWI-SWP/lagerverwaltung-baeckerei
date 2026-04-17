@@ -6,7 +6,12 @@ from typing import Dict, List, Optional
 from ..domain.product import Product
 from ..domain.warehouse import Movement
 from ..ports import RepositoryPort
-from .mongo_repository import MongoRepository
+
+try:
+    from .mongo_repository import MongoRepository
+    MONGO_AVAILABLE = True
+except ImportError:
+    MONGO_AVAILABLE = False
 
 
 class InMemoryRepository(RepositoryPort):
@@ -59,6 +64,8 @@ class RepositoryFactory:
         if repository_type == "memory":
             return InMemoryRepository()
         elif repository_type == "mongodb":
+            if not MONGO_AVAILABLE:
+                raise ValueError("MongoDB nicht verfügbar. Installiere pymongo: pip install pymongo")
             mongo_uri = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
             mongo_db = os.getenv("MONGO_DB", "lagerverwaltung")
             return MongoRepository(uri=mongo_uri, db_name=mongo_db)

@@ -1,14 +1,9 @@
 import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 
-from ...adapters.repository import RepositoryFactory
-from ...services import WarehouseService
+from ...ui.shared import service as _service
 
 admin_bp = Blueprint("admin", __name__)
-
-repository_type = os.getenv("REPOSITORY_TYPE", "memory")
-_repository = RepositoryFactory.create_repository(repository_type)
-_service = WarehouseService(_repository)
 
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
@@ -88,3 +83,28 @@ def statistics():
     total_value = _service.get_total_inventory_value()
 
     return render_template("admin_statistics.html", total_units=total_units, total_value=total_value)
+
+
+@admin_bp.route("/movements")
+@_login_required
+def movements():
+    # Hole alle Bewegungen
+    all_movements = _service.get_movements()
+    print(f"[DEBUG] Anzahl Bewegungen im Repository: {len(all_movements)}")
+    for m in all_movements:
+        print(f"[DEBUG] Bewegung: {m.product_name} | {m.movement_type} | {m.quantity_change}")
+    
+    # Hole Movement Report pro Produkt (aus Warehouse)
+    movement_report = _service.warehouse.get_movement_report()
+    print(f"[DEBUG] Movement Report Keys: {list(movement_report.keys())}")
+    
+    # Gesamtstatistiken
+    movement_stats = _service.warehouse.get_movement_statistics()
+    print(f"[DEBUG] Movement Stats: {movement_stats}")
+    
+    return render_template(
+        "admin_movements.html",
+        all_movements=all_movements,
+        movement_report=movement_report,
+        movement_stats=movement_stats
+    )
