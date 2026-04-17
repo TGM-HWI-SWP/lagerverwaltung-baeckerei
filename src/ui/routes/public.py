@@ -3,15 +3,9 @@ import json
 from pathlib import Path
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 
-from ...adapters.repository import RepositoryFactory
-from ...services import WarehouseService
+from ...ui.shared import service as _service
 
 public_bp = Blueprint("public", __name__)
-
-# Service-Layer-Anbindung (dynamisch, per ENV, fallback InMemory)
-repository_type = os.getenv("REPOSITORY_TYPE", "memory")
-_repository = RepositoryFactory.create_repository(repository_type)
-_service = WarehouseService(_repository)
 
 
 def _init_demo_data():
@@ -68,6 +62,24 @@ def _init_demo_data():
                 category="Kuchen",
                 initial_quantity=25,
             )
+
+        # Füge Demo-Bewegungen hinzu
+        print("[DEBUG] Erstelle Demo-Bewegungen...")
+        try:
+            # Einlagerungen für vorhandene Produkte
+            products = _service.get_all_products()
+            for product_id, product in products.items():
+                if product.quantity > 0:
+                    _service.add_to_stock(product_id, product.quantity, "Initiale Einlagerung", "System")
+            
+            # Zusätzliche Bewegungen für Nachvollziehbarkeit
+            if "BR001" in products:
+                _service.remove_from_stock("BR001", 5, "Verkauf an Kunden", "Anna Schmidt")
+                _service.add_to_stock("BR001", 10, "Nachlieferung", "Max Müller")
+            
+            print("[DEBUG] Demo-Bewegungen erfolgreich erstellt!")
+        except Exception as e:
+            print(f"[DEBUG] Fehler bei Demo-Bewegungen: {e}")
 
 
 _init_demo_data()

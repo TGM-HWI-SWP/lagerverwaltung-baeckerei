@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Lagerbewegungen{% endblock %}
+{% block content %}
+<h2>Lagerbewegungen - Nachvollziehbare Übersicht</h2>
+
+<!-- Gesamtstatistiken -->
+<h3>Gesamtstatistiken</h3>
+<div class="stats-grid">
+  <div class="stat-card">
+    <h4>Gesamt Bewegungen</h4>
+    <p>{{ movement_stats.total_movements }}</p>
+  </div>
+  <div class="stat-card">
+    <h4>Gesamte Mengenänderung</h4>
+    <p>{{ movement_stats.total_quantity_change }}</p>
+  </div>
+  <div class="stat-card">
+    <h4>Einlagerungen</h4>
+    <p>{{ movement_stats.in_movements }}</p>
+  </div>
+  <div class="stat-card">
+    <h4>Auslagerungen</h4>
+    <p>{{ movement_stats.out_movements }}</p>
+  </div>
+  <div class="stat-card">
+    <h4>Korrekturen</h4>
+    <p>{{ movement_stats.corrections }}</p>
+  </div>
+</div>
+
+<!-- Report pro Produkt -->
+<h3>Bewegungsübersicht pro Produkt</h3>
+{% if movement_report %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt-ID</th>
+      <th>Name</th>
+      <th>Gesamt Bewegungen</th>
+      <th>Mengenänderung</th>
+      <th>Einlagerungen</th>
+      <th>Auslagerungen</th>
+      <th>Korrekturen</th>
+      <th>Erste Bewegung</th>
+      <th>Letzte Bewegung</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product_id, report in movement_report.items() %}
+    <tr>
+      <td>{{ product_id }}</td>
+      <td>{{ report.name }}</td>
+      <td>{{ report.total_movements }}</td>
+      <td>{{ report.total_quantity_change }}</td>
+      <td>{{ report.in_movements }}</td>
+      <td>{{ report.out_movements }}</td>
+      <td>{{ report.corrections }}</td>
+      <td>{{ report.first_movement.strftime('%d.%m.%Y %H:%M') if report.first_movement else 'N/A' }}</td>
+      <td>{{ report.last_movement.strftime('%d.%m.%Y %H:%M') if report.last_movement else 'N/A' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Bewegungsdaten verfügbar.</p>
+{% endif %}
+
+<!-- Chronologische Übersicht aller Bewegungen -->
+<h3>Chronologische Übersicht aller Bewegungen</h3>
+{% if all_movements %}
+<table>
+  <thead>
+    <tr>
+      <th>Zeitstempel</th>
+      <th>Produkt</th>
+      <th>Typ</th>
+      <th>Mengenänderung</th>
+      <th>Grund</th>
+      <th>Benutzer</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for move in all_movements | sort(attribute='timestamp', reverse=true) %}
+    <tr>
+      <td>{{ move.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+      <td>{{ move.product_name }}</td>
+      <td>
+        {% if move.movement_type == "IN" %}
+          <span style="color: green;">Einlagerung</span>
+        {% elif move.movement_type == "OUT" %}
+          <span style="color: red;">Auslagerung</span>
+        {% else %}
+          <span style="color: orange;">{{ move.movement_type }}</span>
+        {% endif %}
+      </td>
+      <td>{{ move.quantity_change }}</td>
+      <td>{{ move.reason or 'N/A' }}</td>
+      <td>{{ move.performed_by }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Bewegungen vorhanden.</p>
+{% endif %}
+
+<a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück zum Dashboard</a>
+{% endblock %}

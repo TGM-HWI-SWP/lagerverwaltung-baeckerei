@@ -7,7 +7,6 @@ from typing import List, Dict, Optional
 
 
 class MovementType(Enum):
-    """Typen von Lagerbewegungen"""
     EINGANG = "Eingang"
     AUSGANG = "Ausgang"
     BESTANDSKORREKTUR = "Bestandskorrektur"

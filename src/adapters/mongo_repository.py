@@ -27,15 +27,19 @@ def _dict_to_product(data: dict) -> Product:
 
 
 def _movement_from_doc(doc: dict) -> Movement:
+    from datetime import datetime
+    timestamp = doc.get("timestamp")
+    if isinstance(timestamp, str):
+        timestamp = datetime.fromisoformat(timestamp)
     return Movement(
         id=doc["id"],
         product_id=doc["product_id"],
         product_name=doc.get("product_name", ""),
         quantity_change=int(doc.get("quantity_change", 0)),
         movement_type=doc.get("movement_type", ""),
-        reason=doc.get("reason", ""),
-        performed_by=doc.get("performed_by", ""),
-        timestamp=doc.get("timestamp"),
+        reason=doc.get("reason") or None,
+        performed_by=doc.get("performed_by", "system"),
+        timestamp=timestamp,
     )
 
 

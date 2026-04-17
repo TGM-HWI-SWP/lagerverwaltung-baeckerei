@@ -67,3 +67,74 @@ class Warehouse:
             }
             for product_id, product in self.products.items()
         }
+
+    def get_movement_report(self) -> Dict[str, dict]:
+        """
+        Bewegungsbericht für alle Produkte erstellen
+
+        Returns:
+            Dictionary mit Bewegungsstatistiken pro Produkt
+        """
+        report = {}
+        for product_id, product in self.products.items():
+            movements = [m for m in self.movements if m.product_id == product_id]
+            if movements:
+                total_change = sum(m.quantity_change for m in movements)
+                in_movements = [m for m in movements if m.movement_type == "IN"]
+                out_movements = [m for m in movements if m.movement_type == "OUT"]
+                corrections = [m for m in movements if m.movement_type == "CORRECTION"]
+
+                report[product_id] = {
+                    "name": product.name,
+                    "total_movements": len(movements),
+                    "total_quantity_change": total_change,
+                    "in_movements": len(in_movements),
+                    "out_movements": len(out_movements),
+                    "corrections": len(corrections),
+                    "first_movement": min(movements, key=lambda m: m.timestamp).timestamp if movements else None,
+                    "last_movement": max(movements, key=lambda m: m.timestamp).timestamp if movements else None,
+                }
+        return report
+
+    def get_movements_by_product(self, product_id: str) -> list[Movement]:
+        """
+        Alle Bewegungen für ein bestimmtes Produkt abrufen
+
+        Args:
+            product_id: ID des Produkts
+
+        Returns:
+            Liste der Bewegungen
+        """
+        return [m for m in self.movements if m.product_id == product_id]
+
+    def get_movements_by_type(self, movement_type: str) -> list[Movement]:
+        """
+        Alle Bewegungen eines bestimmten Typs abrufen
+
+        Args:
+            movement_type: Typ der Bewegung ("IN", "OUT", "CORRECTION")
+
+        Returns:
+            Liste der Bewegungen
+        """
+        return [m for m in self.movements if m.movement_type == movement_type]
+
+    def get_movement_statistics(self) -> Dict[str, int]:
+        """
+        Gesamtstatistiken über alle Bewegungen
+
+        Returns:
+            Dictionary mit Statistiken
+        """
+        if not self.movements:
+            return {"total_movements": 0, "total_quantity_change": 0}
+
+        total_change = sum(m.quantity_change for m in self.movements)
+        return {
+            "total_movements": len(self.movements),
+            "total_quantity_change": total_change,
+            "in_movements": len([m for m in self.movements if m.movement_type == "IN"]),
+            "out_movements": len([m for m in self.movements if m.movement_type == "OUT"]),
+            "corrections": len([m for m in self.movements if m.movement_type == "CORRECTION"]),
+        }
