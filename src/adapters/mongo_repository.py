@@ -18,6 +18,11 @@ def _dict_to_product(data: dict) -> Product:
         price=float(data.get("price", 0.0)),
         quantity=int(data.get("quantity", 0)),
         category=data.get("category", ""),
+        sku=data.get("sku", ""),
+        created_at=data.get("created_at"),
+        updated_at=data.get("updated_at"),
+        notes=data.get("notes"),
+        image=data.get("image"),
     )
 
 
