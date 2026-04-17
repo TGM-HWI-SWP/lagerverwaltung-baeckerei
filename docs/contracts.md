@@ -11,7 +11,7 @@ Diese Datei dokumentiert alle externen Schnittstellen des Projekts. Sie wird von
 **Verantwortlich:** Rolle 2 (Businesslogik)
 
 ### Beschreibung
-Abstrakte Schnittstelle für Datenpersistenz. Ermöglicht den Austausch zwischen verschiedenen Speicheradaptern (In-Memory, SQLite, JSON, etc.)
+Abstrakte Schnittstelle für Datenpersistenz. Ermöglicht den Austausch zwischen verschiedenen Speicheradaptern. Aktuell unterstützte Implementierungen sind `InMemoryRepository` und `MongoRepository`; die konkrete Wahl erfolgt über `RepositoryFactory` mit dem Typ `memory` oder `mongodb`.
 
 ### Methoden
 
@@ -26,6 +26,7 @@ Speichert ein Produkt.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 #### `load_product(product_id: str) -> Optional[Product]`
 Lädt ein einzelnes Produkt.
@@ -38,6 +39,7 @@ Lädt ein einzelnes Produkt.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 #### `load_all_products() -> Dict[str, Product]`
 Lädt alle Produkte.
@@ -47,6 +49,7 @@ Lädt alle Produkte.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 #### `delete_product(product_id: str) -> None`
 Löscht ein Produkt.
@@ -59,6 +62,7 @@ Löscht ein Produkt.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 #### `save_movement(movement: Movement) -> None`
 Speichert eine Lagerbewegung.
@@ -68,6 +72,7 @@ Speichert eine Lagerbewegung.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 #### `load_movements() -> List[Movement]`
 Lädt alle Lagerbewegungen.
@@ -77,6 +82,7 @@ Lädt alle Lagerbewegungen.
 
 **Implementierungen:**
 - `InMemoryRepository` (v0.1)
+- `MongoRepository` (v0.1)
 
 ---
 

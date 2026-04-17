@@ -1,4 +1,6 @@
 import os
+import json
+from pathlib import Path
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 
 from ...adapters.repository import RepositoryFactory
@@ -14,30 +16,58 @@ _service = WarehouseService(_repository)
 
 def _init_demo_data():
     if not _service.get_all_products():
-        _service.create_product(
-            product_id="BROT-001",
-            name="Kartoffelbrot",
-            description="Frisches Roggen-Kartoffel-Brot",
-            price=4.50,
-            category="Brot",
-            initial_quantity=50,
-        )
-        _service.create_product(
-            product_id="BREZEL-001",
-            name="Laugenbrezel",
-            description="Knusprige Brezel mit Körnern",
-            price=2.20,
-            category="Backwaren",
-            initial_quantity=80,
-        )
-        _service.create_product(
-            product_id="KUCHEN-001",
-            name="Apfelkuchen",
-            description="Hausgemachter Apfelkuchen (Stück)",
-            price=3.80,
-            category="Kuchen",
-            initial_quantity=25,
-        )
+        # Versuche, dummy_data.json zu laden
+        # Pfad relativ zum Projektroot berechnen
+        current_file = Path(__file__).resolve()
+        project_root = current_file.parents[3]  # src/ui/routes/public.py -> 3x parent = project root
+        dummy_data_path = project_root / "tests" / "dummy_data.json"
+        
+        print(f"[DEBUG] Projekt-Root: {project_root}")
+        print(f"[DEBUG] Versuche JSON zu laden von: {dummy_data_path}")
+        print(f"[DEBUG] Datei existiert: {dummy_data_path.exists()}")
+        
+        try:
+            with open(dummy_data_path, "r", encoding="utf-8") as f:
+                products_data = json.load(f)
+                print(f"[DEBUG] {len(products_data)} Produkte aus JSON geladen")
+                for product in products_data:
+                    _service.create_product(
+                        product_id=product["id"],
+                        name=product["name"],
+                        description=product["description"],
+                        price=product["price"],
+                        category=product.get("category", ""),
+                        initial_quantity=product.get("quantity", 0),
+                    )
+                print("[DEBUG] JSON-Produkte erfolgreich geladen!")
+        except Exception as e:
+            print(f"[DEBUG] Fehler beim JSON-Laden: {type(e).__name__}: {e}")
+            print("[DEBUG] Nutze Fallback-Demo-Daten")
+
+            _service.create_product(
+                product_id="BROT-001",
+                name="Kartoffelbrot",
+                description="Frisches Roggen-Kartoffel-Brot",
+                price=4.50,
+                category="Brot",
+                initial_quantity=50,
+            )
+            _service.create_product(
+                product_id="BREZEL-001",
+                name="Laugenbrezel",
+                description="Knusprige Brezel mit Körnern",
+                price=2.20,
+                category="Backwaren",
+                initial_quantity=80,
+            )
+            _service.create_product(
+                product_id="KUCHEN-001",
+                name="Apfelkuchen",
+                description="Hausgemachter Apfelkuchen (Stück)",
+                price=3.80,
+                category="Kuchen",
+                initial_quantity=25,
+            )
 
 
 _init_demo_data()
