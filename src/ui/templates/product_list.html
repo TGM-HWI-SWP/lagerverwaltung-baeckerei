@@ -8,7 +8,11 @@
   <div class="products-grid">
     {% for product_id, product in products.items() %}
     <article class="product-card">
+      {% if product.image %}
+      <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}" class="product-image">
+      {% else %}
       <img src="https://via.placeholder.com/300x200?text={{ product.name | replace(' ', '+') }}" alt="{{ product.name }}" class="product-image">
+      {% endif %}
       <div class="product-info">
         <h3>{{ product.name }}</h3>
         <p>{{ product.description }}</p>

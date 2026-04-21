@@ -31,21 +31,33 @@ Persönliches Changelog für [ZwanzingerLuis], Rolle: [Rolle1]
 
 ---
 
-## [v0.3] - [Datum]
+## [v0.3] - [17.04.2026]
 
 ### Implementiert
-- [Feature/Fix 1]
+- **product_list.html dynamische Integration:**
+  - Vorher: Hardcodierte Produkte im HTML
+  - Nachher: Dynamisch aus `dummy_data.json`
+  - Placeholder-Bilder mit dynamischen Produktnamen
+  - Darstellung bleibt unverändert
 
-### Tests geschrieben
-- [Tests]
+
+### Probleme & Lösungen
+- **Problem:** MongoDB persistiert Daten zwischen Restarts → JSON nicht neu geladen
+  - **Lösung:** `docker compose down -v` löscht alle Volumes, DB wird beim Start gefüllt
+  
+- **Problem:** Debug-Messages waren nicht sichtbar
+  - **Lösung:** print() in Flask schreibt in Container-Logs, `docker compose logs -f` zeigt diese
 
 ### Commits
 ```
-- [Commits]
+- Feat: product_list.html dynamisch aus dummy_data.json
+- Feat: _init_demo_data() JSON-Integration mit Fallback
+- Feat: Debug-Ausgaben für Datenladen und Pfadtracking
+- Docs: contracts.md MongoRepository dokumentiert
 ```
 
 ### Mergekonflikt(e)
-- [Konflikte, falls vorhanden]
+- Keine
 
 ---
 

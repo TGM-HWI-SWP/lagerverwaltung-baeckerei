@@ -23,6 +23,7 @@ class WarehouseService:
         price: float,
         category: str = "",
         initial_quantity: int = 0,
+        image: str = None,
     ) -> Product:
         """Neues Produkt erstellen und speichern"""
         product = Product(
@@ -32,6 +33,7 @@ class WarehouseService:
             price=price,
             quantity=initial_quantity,
             category=category,
+            image=image,
         )
         self.repository.save_product(product)
         self.warehouse.add_product(product)

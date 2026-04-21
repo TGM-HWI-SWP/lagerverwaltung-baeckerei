@@ -32,6 +32,7 @@ def _init_demo_data():
                         price=product["price"],
                         category=product.get("category", ""),
                         initial_quantity=product.get("quantity", 0),
+                        image=product.get("image"),
                     )
                 print("[DEBUG] JSON-Produkte erfolgreich geladen!")
         except Exception as e:

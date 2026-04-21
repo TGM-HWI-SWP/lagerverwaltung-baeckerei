@@ -19,6 +19,7 @@ class Product:
     quantity: int = 0
     sku: str = ""
     category: str = ""
+    image: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.now)
     updated_at: datetime = field(default_factory=datetime.now)
     notes: Optional[str] = None
