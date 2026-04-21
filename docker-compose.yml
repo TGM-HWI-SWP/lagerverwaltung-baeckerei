@@ -13,6 +13,7 @@ services:
       - FLASK_DEBUG=1
     depends_on:
       - mongo
+    command: sh -c "python seed_mongo.py && python -m src.ui.flask_app"
 
   mongo:
     image: mongo:6.0

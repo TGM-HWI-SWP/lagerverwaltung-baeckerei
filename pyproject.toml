@@ -12,6 +12,7 @@ dependencies = [
     "Flask>=2.3.0",
     "pymongo>=4.7.0",
     "tinydb>=4.8.0",
+    "flasgger>=0.9.7.1",
 ]
 
 [project.optional-dependencies]

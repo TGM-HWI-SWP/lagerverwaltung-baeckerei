@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flasgger import Swagger
 
 from .routes import register_routes
 
@@ -11,6 +12,18 @@ def create_app(test_config=None):
 
     if test_config is not None:
         app.config.update(test_config)
+
+    # Swagger UI
+    swagger = Swagger(app, template={
+        "swagger": "2.0",
+        "info": {
+            "title": "Lagerverwaltung API",
+            "description": "API für die Lagerverwaltungs-Anwendung",
+            "version": "1.0.0"
+        },
+        "host": "localhost:5000",
+        "schemes": ["http"]
+    })
 
     register_routes(app)
 

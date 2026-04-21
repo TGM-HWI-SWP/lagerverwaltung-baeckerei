@@ -23,6 +23,7 @@ class Product:
     created_at: datetime = field(default_factory=datetime.now)
     updated_at: datetime = field(default_factory=datetime.now)
     notes: Optional[str] = None
+    image: Optional[str] = None
 
     def __post_init__(self):
         """Validierung nach Initialisierung. Siehe docs/DATACLASS_ERKLAERT.md."""
