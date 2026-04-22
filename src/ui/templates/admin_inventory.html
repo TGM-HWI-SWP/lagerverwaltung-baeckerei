@@ -2,6 +2,7 @@
 {% block title %}Lagerbestand{% endblock %}
 {% block content %}
 <h2>Interner Lagerbestand</h2>
+
 {% if products %}
 <table>
   <thead>
@@ -25,8 +26,57 @@
     {% endfor %}
   </tbody>
 </table>
+
+<!-- Kreisdiagramm -->
+<h3>Bestandsverteilung</h3>
+<div style="width: 300px; height: 300px;">
+  <canvas id="inventoryChart"></canvas>
+</div>
+
 {% else %}
 <p>Keine Produkte im Lager.</p>
 {% endif %}
+
 <a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück</a>
+
+<!-- Chart.js einbinden -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  {% if products %}
+  const labels = [
+    {% for product in products.values() %}
+      "{{ product.name }}",
+    {% endfor %}
+  ];
+
+  const data = [
+    {% for product in products.values() %}
+      {{ product.quantity }},
+    {% endfor %}
+  ];
+
+  const ctx = document.getElementById('inventoryChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+  {% endif %}
+</script>
+
 {% endblock %}
