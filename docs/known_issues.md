@@ -44,9 +44,6 @@
 - Docker-Compose ist aufgebaut, aber Migration der Demo-Daten in MongoDB erfolgt erst nach Phase 2
 - PyQt6 Desktop-App läuft nicht in Docker (fehlende X11/Display) – nutze `.` (lokal) oder `Dockerfile.gui` mit X11-Forwarding
 
-### Performance-Limitationen
-- In-Memory Repository: max. ~100.000 Produkte pro Session
-- Keine Pagination implementiert
 
 ---
 
