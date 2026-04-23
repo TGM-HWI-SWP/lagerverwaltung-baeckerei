@@ -61,24 +61,33 @@ Persönliches Changelog für [ZwanzingerLuis], Rolle: [Rolle1]
 
 ---
 
-## [v0.4] - [Datum]
+## [v0.4] - [23.04.2026]
 
 ### Implementiert
-- [Feature/Fix]
-
-### Tests geschrieben
-- [Tests]
-
+- Überarbeitung von contracts.md auf professionelles Niveau:
+  - Ergänzung von Preconditions & Postconditions für zentrale Service-Methoden
+  - Erweiterung der Fehlerfall-Definitionen (Exceptions)
+  - Einführung von Use-Case-Bezügen („Verwendet in“) zur besseren Nachvollziehbarkeit
+  - Ergänzung von Constraints/Regeln bei Domain Models (z. B. price ≥ 0, quantity ≥ 0)
+  - Präzisere Beschreibung der Repository- und Report-Schnittstellen
+  - Verbesserung der Struktur und Klarheit der Dokumentation
+- Fokus auf bewertungsrelevante Aspekte:
+  - Testbarkeit
+  - Nachvollziehbarkeit
+  - klare Schnittstellendefinition
+### Probleme & Lösungen
+  - Problem: Contracts waren funktional korrekt, aber zu oberflächlich für eine sehr gute Bewertung
+  - Lösung: Erweiterung um formale Spezifikationen (Pre/Postconditions, Constraints)
+  - Problem: Fehlende Verbindung zwischen Methoden und Use-Cases
+  - Lösung: Einführung von „Verwendet in“-Abschnitten
 ### Commits
-```
-- [Commits]
-```
+  - Docs: contracts.md um Preconditions & Postconditions erweitert
+  - Docs: Fehlerfälle und Constraints ergänzt
+  - Docs: Use-Case-Bezüge hinzugefügt
+  - Docs: Struktur und Lesbarkeit verbessert
 
 ### Mergekonflikt(e)
-- [Konflikte]
-
----
-
+  Keine
 ## [v0.5] - [Datum]
 
 ### Implementiert

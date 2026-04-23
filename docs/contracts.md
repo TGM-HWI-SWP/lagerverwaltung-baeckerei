@@ -2,7 +2,15 @@
 
 ## Übersicht
 
-Diese Datei dokumentiert alle externen Schnittstellen des Projekts. Sie wird von Rolle 1 (Contract Owner) gepflegt und aktualisiert bei jeder Änderung.
+Diese Datei dokumentiert alle externen Schnittstellen des Projekts. Sie wird von Rolle 1 (Contract Owner) gepflegt und bei jeder Änderung versioniert.
+
+Die Contracts definieren die Zusammenarbeit zwischen:
+
+* UI ↔ Services
+* Services ↔ Repository (Ports)
+* Services ↔ Reports
+
+Ziel ist eine klare Trennung von Businesslogik und Infrastruktur gemäß Port-/Adapter-Architektur.
 
 ---
 
@@ -11,78 +19,167 @@ Diese Datei dokumentiert alle externen Schnittstellen des Projekts. Sie wird von
 **Verantwortlich:** Rolle 2 (Businesslogik)
 
 ### Beschreibung
-Abstrakte Schnittstelle für Datenpersistenz. Ermöglicht den Austausch zwischen verschiedenen Speicheradaptern. Aktuell unterstützte Implementierungen sind `InMemoryRepository` und `MongoRepository`; die konkrete Wahl erfolgt über `RepositoryFactory` mit dem Typ `memory` oder `mongodb`.
+
+Abstrakte Schnittstelle für Datenpersistenz. Ermöglicht den Austausch zwischen verschiedenen Speicheradaptern.
+
+Aktuelle Implementierungen:
+
+* `InMemoryRepository`
+* `MongoRepository`
+
+Auswahl erfolgt über `RepositoryFactory` (`memory` / `mongodb`).
+
+---
 
 ### Methoden
 
 #### `save_product(product: Product) -> None`
+
 Speichert ein Produkt.
 
 **Parameter:**
-- `product`: Product-Instanz
+
+* `product`: Product-Instanz (darf nicht None sein)
+
+**Preconditions:**
+
+* product.id ist eindeutig
+* product ist valide (siehe Domain-Regeln)
+
+**Postconditions:**
+
+* Produkt ist persistent gespeichert oder aktualisiert
 
 **Exceptions:**
-- Keine
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* ValueError: wenn product None ist oder ungültige Daten enthält
+
+**Verwendet in:**
+
+* Produkt anlegen
+* Produkt aktualisieren
+
+---
 
 #### `load_product(product_id: str) -> Optional[Product]`
+
 Lädt ein einzelnes Produkt.
 
 **Parameter:**
-- `product_id`: Eindeutige Produkt-ID
+
+* `product_id`: eindeutige Produkt-ID (nicht leer)
 
 **Return:**
-- `Product` oder `None` falls nicht gefunden
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* Product → falls gefunden
+* None → falls nicht vorhanden
+
+**Preconditions:**
+
+* product_id darf nicht leer sein
+
+**Exceptions:**
+
+* ValueError: wenn product_id leer ist
+
+**Verwendet in:**
+
+* Produkt anzeigen
+* Lagerbestand ändern
+
+---
 
 #### `load_all_products() -> Dict[str, Product]`
+
 Lädt alle Produkte.
 
 **Return:**
-- Dictionary mit Product-IDs als Keys
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* Dictionary mit Produkt-ID als Key
+
+**Postconditions:**
+
+* Alle gespeicherten Produkte werden zurückgegeben
+
+**Verwendet in:**
+
+* GUI-Übersicht
+* Reports
+
+---
 
 #### `delete_product(product_id: str) -> None`
+
 Löscht ein Produkt.
 
 **Parameter:**
-- `product_id`: Eindeutige Produkt-ID
+
+* `product_id`: eindeutige Produkt-ID
+
+**Preconditions:**
+
+* product_id darf nicht leer sein
+
+**Postconditions:**
+
+* Produkt existiert nicht mehr im Repository
 
 **Exceptions:**
-- Keine (ignoriert unbekannte IDs)
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* ValueError: wenn product_id leer ist
+
+**Verhalten:**
+
+* Unbekannte IDs werden ignoriert (kein Fehler)
+
+**Verwendet in:**
+
+* Produkt entfernen
+
+---
 
 #### `save_movement(movement: Movement) -> None`
+
 Speichert eine Lagerbewegung.
 
 **Parameter:**
-- `movement`: Movement-Instanz
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* `movement`: Movement-Instanz (darf nicht None sein)
+
+**Preconditions:**
+
+* movement.product_id existiert
+
+**Postconditions:**
+
+* Bewegung ist persistent gespeichert
+
+**Exceptions:**
+
+* ValueError: bei ungültiger Bewegung
+
+**Verwendet in:**
+
+* Lagerbestand erhöhen/verringern
+
+---
 
 #### `load_movements() -> List[Movement]`
+
 Lädt alle Lagerbewegungen.
 
 **Return:**
-- Liste von Movement-Objekten
 
-**Implementierungen:**
-- `InMemoryRepository` (v0.1)
-- `MongoRepository` (v0.1)
+* Liste aller Movement-Objekte
+
+**Postconditions:**
+
+* Alle gespeicherten Bewegungen werden zurückgegeben
+
+**Verwendet in:**
+
+* Bewegungsreport
+* Analyse
 
 ---
 
@@ -91,27 +188,73 @@ Lädt alle Lagerbewegungen.
 **Verantwortlich:** Rolle 3 (Reports & Qualität)
 
 ### Beschreibung
-Abstrakte Schnittstelle für Report-Generierung.
+
+Abstrakte Schnittstelle zur Generierung von Reports auf Basis gespeicherter Daten.
+
+Reports sind:
+
+* deterministisch
+* testbar
+* unabhängig von der UI
+
+---
 
 ### Methoden
 
 #### `generate_inventory_report() -> str`
+
 Generiert einen Lagerbestandsbericht.
 
-**Return:**
-- Formatierter String-Bericht
+**Inhalt:**
 
-**Implementierungen:**
-- `ConsoleReportAdapter` (v0.1)
+* alle Produkte
+* aktueller Bestand
+* Gesamtwert pro Produkt
+
+**Return:**
+
+* formatierter String
+
+**Preconditions:**
+
+* Produktdaten vorhanden (kann auch leer sein)
+
+**Postconditions:**
+
+* konsistenter Bericht basierend auf aktuellem Zustand
+
+**Verwendet in:**
+
+* GUI Anzeige
+* Report A
+
+---
 
 #### `generate_movement_report() -> str`
+
 Generiert ein Bewegungsprotokoll.
 
-**Return:**
-- Formatierter String-Bericht
+**Inhalt:**
 
-**Implementierungen:**
-- `ConsoleReportAdapter` (v0.1)
+* alle Bewegungen chronologisch
+* Menge, Zeit, Benutzer
+
+**Return:**
+
+* formatierter String
+
+**Preconditions:**
+
+* Bewegungsdaten vorhanden (kann leer sein)
+
+**Postconditions:**
+
+* vollständige Historie der Bewegungen
+
+**Verwendet in:**
+
+* GUI Anzeige
+* Report B
 
 ---
 
@@ -120,74 +263,119 @@ Generiert ein Bewegungsprotokoll.
 **Verantwortlich:** Rolle 2 (Businesslogik)
 
 ### Beschreibung
-Service-Klasse für zentrale Lagerverwaltungslogik.
+
+Zentrale Service-Klasse für die Lagerlogik.
+
+---
 
 ### Methoden
 
 #### `create_product(...) -> Product`
+
 Erstellt ein neues Produkt.
 
 **Parameter:**
-- `product_id: str` - Eindeutige ID
-- `name: str` - Produktname
-- `description: str` - Beschreibung
-- `price: float` - Preis
-- `category: str` - Kategorie (optional)
-- `initial_quantity: int` - Anfangsbestand
 
-**Return:**
-- Neue Product-Instanz
+* product_id: str
+* name: str
+* description: str
+* price: float
+* category: str (optional)
+* initial_quantity: int
+
+**Preconditions:**
+
+* product_id eindeutig
+* price >= 0
+* initial_quantity >= 0
+
+**Postconditions:**
+
+* Produkt existiert im Repository
+* Anfangsbestand gesetzt
 
 **Exceptions:**
-- `ValueError`: Bei ungültigen Eingaben
+
+* ValueError: bei ungültigen Eingaben
+
+---
 
 #### `add_to_stock(product_id: str, quantity: int, reason: str, user: str) -> None`
+
 Erhöht den Bestand.
 
-**Parameter:**
-- `product_id: str`
-- `quantity: int` - Menge
-- `reason: str` - Grund (optional)
-- `user: str` - Benutzer (default: "system")
+**Preconditions:**
+
+* Produkt existiert
+* quantity > 0
+
+**Postconditions:**
+
+* Bestand erhöht
+* Movement gespeichert
 
 **Exceptions:**
-- `ValueError`: Wenn Produkt nicht existiert
+
+* ValueError: wenn Produkt nicht existiert oder Menge ungültig
+
+---
 
 #### `remove_from_stock(product_id: str, quantity: int, reason: str, user: str) -> None`
+
 Verringert den Bestand.
 
-**Parameter:**
-- `product_id: str`
-- `quantity: int` - Menge
-- `reason: str` - Grund (optional)
-- `user: str` - Benutzer (default: "system")
+**Preconditions:**
+
+* Produkt existiert
+* quantity > 0
+* ausreichend Bestand vorhanden
+
+**Postconditions:**
+
+* Bestand reduziert
+* Movement gespeichert
 
 **Exceptions:**
-- `ValueError`: Wenn Bestand unzureichend oder Produkt nicht existiert
+
+* ValueError: bei unzureichendem Bestand oder ungültigem Produkt
+
+---
 
 #### `get_product(product_id: str) -> Optional[Product]`
-Ruft ein einzelnes Produkt ab.
+
+**Preconditions:**
+
+* product_id nicht leer
 
 **Return:**
-- Product oder None
+
+* Product oder None
+
+---
 
 #### `get_all_products() -> Dict[str, Product]`
-Ruft alle Produkte ab.
 
 **Return:**
-- Dictionary mit allen Produkten
+
+* alle Produkte
+
+---
 
 #### `get_movements() -> List[Movement]`
-Ruft alle Lagerbewegungen ab.
 
 **Return:**
-- Liste aller Movements
+
+* alle Bewegungen
+
+---
 
 #### `get_total_inventory_value() -> float`
-Berechnet den Gesamtwert des Lagers.
 
-**Return:**
-- Wert in Euro
+Berechnet Gesamtwert des Lagers.
+
+**Postconditions:**
+
+* Summe aller Produktwerte korrekt berechnet
 
 ---
 
@@ -196,40 +384,62 @@ Berechnet den Gesamtwert des Lagers.
 ### Product
 
 **Attribute:**
-- `id: str` - Eindeutige ID
-- `name: str` - Produktname
-- `description: str` - Beschreibung
-- `price: float` - Preis pro Einheit
-- `quantity: int` - Bestand
-- `sku: str` - Stock Keeping Unit
-- `category: str` - Kategorie
-- `created_at: datetime` - Erstellungsdatum
-- `updated_at: datetime` - Änderungsdatum
-- `notes: str` - Anmerkungen
+
+* id: str
+* name: str
+* description: str
+* price: float
+* quantity: int
+* sku: str
+* category: str
+* created_at: datetime
+* updated_at: datetime
+* notes: str
+
+**Regeln (Constraints):**
+
+* id eindeutig
+* price >= 0
+* quantity >= 0
 
 **Methoden:**
-- `update_quantity(amount: int) -> None` - Bestand ändern
-- `get_total_value() -> float` - Gesamtwert berechnen
+
+* update_quantity(amount: int) -> None
+* get_total_value() -> float
+
+---
 
 ### Movement
 
 **Attribute:**
-- `id: str` - Eindeutige Bewegungs-ID
-- `product_id: str` - Verweis auf Produkt
-- `product_name: str` - Name des Produkts
-- `quantity_change: int` - Mengenänderung (+/-)
-- `movement_type: str` - "IN", "OUT", "CORRECTION"
-- `reason: str` - Grund (optional)
-- `timestamp: datetime` - Zeitstempel
-- `performed_by: str` - Benutzer
+
+* id: str
+* product_id: str
+* product_name: str
+* quantity_change: int
+* movement_type: str ("IN", "OUT", "CORRECTION")
+* reason: str
+* timestamp: datetime
+* performed_by: str
+
+**Regeln:**
+
+* product_id muss existieren
+* quantity_change ≠ 0
 
 ---
 
 ## Versionshistorie der Contracts
 
 ### v0.1 (2025-01-20)
-- RepositoryPort: Grundlegende CRUD-Operationen
-- ReportPort: Basis-Report-Generierung
-- WarehouseService: Kern-Use-Cases
-- Product: Basis-Domain-Model
-- Movement: Lagerbewegungen-Protokoll
+
+* RepositoryPort: CRUD-Operationen definiert
+* ReportPort: Basis-Reports
+* WarehouseService: Kern-Use-Cases
+* Domain Models: Product & Movement
+
+### v0.2
+
+* Preconditions & Postconditions ergänzt
+* Fehlerfälle präzisiert
+* Use-Case-Bezüge hinzugefügt
