@@ -15,6 +15,11 @@ class WarehouseService:
         self.repository = repository
         self.warehouse = Warehouse("Hauptlager")
 
+    def _ensure_product_in_warehouse(self, product: Product) -> None:
+        """Spiegelt ein geladenes Produkt in das In-Memory-Warehouse."""
+        if self.warehouse.get_product(product.id) is None:
+            self.warehouse.add_product(product)
+
     def create_product(
         self,
         product_id: str,
@@ -36,7 +41,7 @@ class WarehouseService:
             image=image,
         )
         self.repository.save_product(product)
-        self.warehouse.add_product(product)
+        self._ensure_product_in_warehouse(product)
         return product
 
     def add_to_stock(
@@ -47,6 +52,7 @@ class WarehouseService:
         if not product:
             raise ValueError(f"Produkt {product_id} nicht gefunden")
 
+        self._ensure_product_in_warehouse(product)
         product.update_quantity(quantity)
         self.repository.save_product(product)
 
@@ -60,7 +66,6 @@ class WarehouseService:
             performed_by=user,
         )
         self.repository.save_movement(movement)
-        self.warehouse.record_movement(movement)
 
     def remove_from_stock(
         self, product_id: str, quantity: int, reason: str = "", user: str = "system"
@@ -70,6 +75,7 @@ class WarehouseService:
         if not product:
             raise ValueError(f"Produkt {product_id} nicht gefunden")
 
+        self._ensure_product_in_warehouse(product)
         if product.quantity < quantity:
             raise ValueError(
                 f"Unzureichender Bestand. Verfügbar: {product.quantity}, Angefordert: {quantity}"
@@ -88,7 +94,6 @@ class WarehouseService:
             performed_by=user,
         )
         self.repository.save_movement(movement)
-        self.warehouse.record_movement(movement)
 
     def get_product(self, product_id: str) -> Optional[Product]:
         """Produkt abrufen"""

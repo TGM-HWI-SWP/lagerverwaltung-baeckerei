@@ -1,7 +1,50 @@
 {% extends "base.html" %}
 {% block title %}Bestellübersicht{% endblock %}
 {% block content %}
-<h2>Bestellübersicht / Lagerbewegungen</h2>
+<h2>Bestellübersicht</h2>
+
+{# Tabelle nur für Online-Bestellungen #}
+{% set order_movements = movements | selectattr("reason", "contains", "Online-Bestellung") | list %}
+{% if order_movements %}
+<table>
+  <thead>
+    <tr>
+      <th>Bestell-ID</th>
+      <th>Produkt</th>
+      <th>Menge</th>
+      <th>Kunde</th>
+      <th>Abholung</th>
+      <th>Datum</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for move in order_movements %}
+    <tr>
+      <td>#{{ move.id[:8] }}</td>
+      <td>{{ move.product_name }}</td>
+      <td>{{ move.quantity_change | abs }}x</td>
+      <td>{{ move.performed_by }}</td>
+      <td>
+        {% if "Abholung" in move.reason %}
+          {% set parts = move.reason.split("Abholung ") %}
+          {% if parts[1] %}
+            {% set abholung = parts[1].split(" um ") %}
+            {{ abholung[0] }} um {{ abholung[1] }}
+          {% endif %}
+        {% endif %}
+      </td>
+      <td>{{ move.timestamp.strftime("%d.%m.%Y %H:%M") if move.timestamp else "-" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Noch keine Bestellungen aufgegeben.</p>
+{% endif %}
+
+<hr style="margin: 2rem 0;">
+
+<h3>Alle Lagerbewegungen</h3>
 {% if movements %}
 <table>
   <thead>

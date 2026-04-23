@@ -2,18 +2,220 @@
 {% block title %}Bestellansicht{% endblock %}
 {% block content %}
 <h2>Bestellung aufgeben</h2>
-{% if message %}<div class="alert">{{ message }}</div>{% endif %}
-<form method="post" class="form-grid">
-  <label for="product_id">Produkt</label>
-  <select name="product_id" id="product_id">
-    {% for product in products.values() %}
-    <option value="{{ product.id }}">{{ product.name }} ({{ product.quantity }} verfügbar)</option>
+
+{% if step == "customer" %}
+{# Schritt 2: Kundendaten eingeben #}
+<div class="order-summary">
+  <h3>Warenkorb</h3>
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Menge</th>
+        <th>Preis</th>
+        <th>Summe</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+      <tr>
+        <td>{{ products[item.product_id].name }}</td>
+        <td>{{ item.quantity }}x</td>
+        <td>{{ "%.2f"|format(products[item.product_id].price) }} €</td>
+        <td>{{ "%.2f"|format(products[item.product_id].price * item.quantity) }} €</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Gesamtsumme</strong></td>
+        <td><strong>{{ "%.2f"|format(cart_total) }} €</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <p class="cart-note">Sie können den Warenkorb im nächsten Schritt mit Ihren Daten versehen.</p>
+  
+  <form method="post" class="form-grid">
+    {% for item in cart %}
+    <input type="hidden" name="product_ids" value="{{ item.product_id }}">
+    <input type="hidden" name="quantities" value="{{ item.quantity }}">
     {% endfor %}
-  </select>
+    
+    <label for="customer_name">Ihr Name *</label>
+    <input type="text" id="customer_name" name="customer_name" value="{{ customer_name|default('') }}" placeholder="Max Mustermann" required minlength="2" />
 
-  <label for="quantity">Menge</label>
-  <input type="number" id="quantity" name="quantity" value="1" min="1" required />
+    <label for="customer_email">E-Mail-Adresse *</label>
+    <input type="email" id="customer_email" name="customer_email" value="{{ customer_email|default('') }}" placeholder="max@beispiel.at" required />
 
-  <button class="btn" type="submit">Bestellung abschicken</button>
+    <label for="pickup_date">Abholung - Datum *</label>
+    <input type="date" id="pickup_date" name="pickup_date" value="{{ pickup_date|default('') }}" min="{{ min_date }}" required />
+
+    <label for="pickup_time">Abholung - Uhrzeit *</label>
+    <select name="pickup_time" id="pickup_time" required>
+      <option value="">-- Bitte wählen --</option>
+      <option value="08:00" {% if pickup_time == '08:00' %}selected{% endif %}>08:00 - 09:00</option>
+      <option value="09:00" {% if pickup_time == '09:00' %}selected{% endif %}>09:00 - 10:00</option>
+      <option value="10:00" {% if pickup_time == '10:00' %}selected{% endif %}>10:00 - 11:00</option>
+      <option value="11:00" {% if pickup_time == '11:00' %}selected{% endif %}>11:00 - 12:00</option>
+      <option value="12:00" {% if pickup_time == '12:00' %}selected{% endif %}>12:00 - 13:00</option>
+      <option value="13:00" {% if pickup_time == '13:00' %}selected{% endif %}>13:00 - 14:00</option>
+      <option value="14:00" {% if pickup_time == '14:00' %}selected{% endif %}>14:00 - 15:00</option>
+      <option value="15:00" {% if pickup_time == '15:00' %}selected{% endif %}>15:00 - 16:00</option>
+      <option value="16:00" {% if pickup_time == '16:00' %}selected{% endif %}>16:00 - 17:00</option>
+    </select>
+
+    <div class="button-group">
+      <a href="{{ url_for('public.order') }}" class="btn btn-secondary">Zurück zum Warenkorb</a>
+      <button class="btn" type="submit" name="step" value="summary">Weiter zur Zusammenfassung</button>
+    </div>
+  </form>
+</div>
+
+{% elif step == "summary" %}
+{# Schritt 3: Zusammenfassung & Bestellung finalisieren #}
+<div class="order-summary">
+  <h3>Bestellübersicht</h3>
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Menge</th>
+        <th>Preis</th>
+        <th>Summe</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+      <tr>
+        <td>{{ products[item.product_id].name }}</td>
+        <td>{{ item.quantity }}x</td>
+        <td>{{ "%.2f"|format(products[item.product_id].price) }} €</td>
+        <td>{{ "%.2f"|format(products[item.product_id].price * item.quantity) }} €</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Gesamtsumme</strong></td>
+        <td><strong>{{ "%.2f"|format(cart_total) }} €</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <div class="summary-details">
+    <hr>
+    <p><strong>Name:</strong> {{ customer_name }}</p>
+    <p><strong>E-Mail:</strong> {{ customer_email }}</p>
+    <p><strong>Abholung am:</strong> {{ pickup_date }} um {{ pickup_time }}</p>
+  </div>
+  
+  <form method="post" class="form-grid">
+    {% for item in cart %}
+    <input type="hidden" name="product_ids" value="{{ item.product_id }}">
+    <input type="hidden" name="quantities" value="{{ item.quantity }}">
+    {% endfor %}
+    <input type="hidden" name="customer_name" value="{{ customer_name }}">
+    <input type="hidden" name="customer_email" value="{{ customer_email }}">
+    <input type="hidden" name="pickup_date" value="{{ pickup_date }}">
+    <input type="hidden" name="pickup_time" value="{{ pickup_time }}">
+    <input type="hidden" name="confirm" value="1">
+    
+    <div class="button-group">
+      <button type="submit" name="step" value="customer" class="btn btn-secondary">Zurück</button>
+      <button class="btn" type="submit">Bestellung finalisieren</button>
+    </div>
+  </form>
+</div>
+
+{% else %}
+{# Schritt 1: Warenkorb - Produkte auswählen #}
+{% if validation_errors %}
+<div class="alert alert-error">
+  <strong>Bitte überprüfen Sie Ihre Eingaben:</strong>
+  <ul>
+  {% for error in validation_errors %}
+    <li>{{ error }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if cart|length > 0 %}
+<div class="cart-summary-bar">
+  <span>Im Warenkorb: {{ cart|length }} Produkt(e)</span>
+  <span class="cart-total">Gesamt: {{ "%.2f"|format(cart_total) }} €</span>
+</div>
+{% endif %}
+
+<form method="post" class="form-grid" id="orderForm">
+  <div class="product-selection">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Auswahl</th>
+          <th>Produkt</th>
+          <th>Verfügbar</th>
+          <th>Preis</th>
+          <th>Menge</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products.values() %}
+        <tr>
+          <td>
+            <input type="checkbox" 
+                   id="select_{{ product.id }}" 
+                   name="selected_products" 
+                   value="{{ product.id }}"
+                   {% if product.id in cart_product_ids %}checked{% endif %}
+                   {% if product.quantity == 0 %}disabled{% endif %}
+                   onchange="toggleQuantity('{{ product.id }}')">
+          </td>
+          <td>
+            <label for="select_{{ product.id }}">{{ product.name }}</label>
+          </td>
+          <td>{{ product.quantity }} Stück</td>
+          <td>{{ "%.2f"|format(product.price) }} €</td>
+          <td>
+            <input type="number" 
+                   id="qty_{{ product.id }}" 
+                   name="quantity_{{ product.id }}" 
+                   value="{{ cart_quantities[product.id]|default(1) }}"
+                   min="1" 
+                   max="{{ product.quantity }}"
+                   {% if product.id not in cart_product_ids %}disabled{% endif %}
+                   class="qty-input">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="button-group">
+    <button class="btn" type="submit" name="step" value="cart">Warenkorb aktualisieren</button>
+    <button class="btn btn-primary" type="submit" name="step" value="customer" {% if cart|length == 0 %}disabled{% endif %}>
+      Weiter zu Kundendaten
+    </button>
+  </div>
 </form>
+
+<script>
+function toggleQuantity(productId) {
+  const checkbox = document.getElementById('select_' + productId);
+  const qtyInput = document.getElementById('qty_' + productId);
+  qtyInput.disabled = !checkbox.checked;
+  if (checkbox.checked && qtyInput.value === '0') {
+    qtyInput.value = '1';
+  }
+}
+</script>
+{% endif %}
+
+{% if message %}
+<div class="alert {% if 'erfolgreich' in message %}alert-success{% else %}alert-error{% endif %}">
+  {{ message }}
+</div>
+{% endif %}
 {% endblock %}

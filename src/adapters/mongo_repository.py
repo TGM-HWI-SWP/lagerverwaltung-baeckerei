@@ -1,6 +1,7 @@
 """MongoDB Adapter als alternatives Repository"""
 
 import os
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from pymongo import MongoClient
@@ -8,6 +9,14 @@ from pymongo import MongoClient
 from ..domain.product import Product
 from ..domain.warehouse import Movement
 from ..ports import RepositoryPort
+
+
+def _coerce_datetime(value):
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        return datetime.fromisoformat(value)
+    return datetime.now()
 
 
 def _dict_to_product(data: dict) -> Product:
@@ -19,18 +28,14 @@ def _dict_to_product(data: dict) -> Product:
         quantity=int(data.get("quantity", 0)),
         category=data.get("category", ""),
         sku=data.get("sku", ""),
-        created_at=data.get("created_at"),
-        updated_at=data.get("updated_at"),
+        created_at=_coerce_datetime(data.get("created_at")),
+        updated_at=_coerce_datetime(data.get("updated_at")),
         notes=data.get("notes"),
         image=data.get("image"),
     )
 
 
 def _movement_from_doc(doc: dict) -> Movement:
-    from datetime import datetime
-    timestamp = doc.get("timestamp")
-    if isinstance(timestamp, str):
-        timestamp = datetime.fromisoformat(timestamp)
     return Movement(
         id=doc["id"],
         product_id=doc["product_id"],
@@ -39,7 +44,7 @@ def _movement_from_doc(doc: dict) -> Movement:
         movement_type=doc.get("movement_type", ""),
         reason=doc.get("reason") or None,
         performed_by=doc.get("performed_by", "system"),
-        timestamp=timestamp,
+        timestamp=_coerce_datetime(doc.get("timestamp")),
     )
 
 

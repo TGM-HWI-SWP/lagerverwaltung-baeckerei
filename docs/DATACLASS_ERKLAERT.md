@@ -14,7 +14,7 @@ class Product:
         self.price = price
         self.quantity = quantity
         self.sku = sku
-        self.category = category
+        self.category = categorys
     
     def __repr__(self):
         return f"Product(id={self.id!r}, name={self.name!r}, description={self.description!r}, ...)"

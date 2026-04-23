@@ -1,22 +1,6 @@
 import matplotlib.pyplot as plt
 from typing import Dict
-from datetime import datetime
 from src.reports.movement import MovementReport, Movement, MovementType
-from src.reports.visualisierung_movements import MovementDarstellung
-
-report = MovementReport()
-
-report.add_movement(Movement("1", "Brot", MovementType.EINGANG, 10))
-report.add_movement(Movement("1", "Brot", MovementType.AUSGANG, -3))
-report.add_movement(Movement("2", "Kuchen", MovementType.EINGANG, 5))
-
-visualizer = MovementDarstellung(report)
-visualizer.plot_all()
-
-
-
-
-from src.reports.movement import MovementReport
 
 
 class MovementDarstellung:
@@ -106,3 +90,13 @@ class MovementDarstellung:
         self.plot_movement_types()
         self.plot_product_changes()
         self.plot_inventory_over_time()
+
+
+if __name__ == "__main__":
+    report = MovementReport()
+    report.add_movement(Movement("1", "Brot", MovementType.EINGANG, 10))
+    report.add_movement(Movement("1", "Brot", MovementType.AUSGANG, -3))
+    report.add_movement(Movement("2", "Kuchen", MovementType.EINGANG, 5))
+
+    visualizer = MovementDarstellung(report)
+    visualizer.plot_all()
