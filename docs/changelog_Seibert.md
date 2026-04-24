@@ -1,48 +1,43 @@
-# Changelog - [Name]
+# Changelog - [Laurin Seibert]
 
-Persönliches Changelog für [Name], Rolle: [Rollenbezeichnung]
+Persönliches Changelog für [Laurin Seibert], Rolle: [3]
+
+
+
+
+## [v0.4] - [16.04.2026]
+
+### Implementiert
+- Implementierung des Bewegungsreports
+
+
+### Tests geschrieben
+- noch keine geschrieben
+
+### Commits
+
+- Report B eingefügt (unter Reiter Bewegung)
+
+### Mergekonflikt(e)
+- keine Konflike in meinem zusammenhang
 
 ---
 
-## [v0.1] - 2025-01-20
+## [v0.2] - [24.04.2026]
 
 ### Implementiert
-- [Feature/Fix 1]
-- [Feature/Fix 2]
-- [Feature/Fix 3]
+- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
 
 ### Tests geschrieben
-- test_[name 1]
-- test_[name 2]
+- noch keine geschrieben
 
 ### Commits
-```
-- abc1234 Feat: [Beschreibung]
-- def5678 Test: [Beschreibung]
-- ghi9012 Docs: [Beschreibung]
-```
+
+- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
+
 
 ### Mergekonflikt(e)
-- [Datei]: [Kurzbeschreibung und Lösung]
-
----
-
-## [v0.2] - [Datum]
-
-### Implementiert
-- [Feature/Fix 1]
-- [Feature/Fix 2]
-
-### Tests geschrieben
-- test_[name 1]
-
-### Commits
-```
-- jkl3456 Feat: [Beschreibung]
-```
-
-### Mergekonflikt(e)
-- Keine
+- Keine vorhanden
 
 ---
 
@@ -60,14 +55,33 @@ Persönliches Changelog für [Name], Rolle: [Rollenbezeichnung]
 ```
 
 ### Mergekonflikt(e)
-- [Konflikte, falls vorhanden]
+- keine Konflikte
 
 ---
 
-## [v0.4] - [Datum]
+## [v0.4] - [16.04.2026]
 
 ### Implementiert
-- [Feature/Fix]
+- Implementierung des Bewegungsreports
+- Implementierung jeglicher Statisiken
+
+### Tests geschrieben
+- 
+
+### Commits
+
+- Report B eingefügt (unter Reiter Bewegung)
+- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
+
+### Mergekonflikt(e)
+- keine Konflike in meinem zusammenhang
+
+---
+
+## [v0.5] - [24.04.2026]
+
+### Implementiert
+- Implementierung jeglicher Statisiken
 
 ### Tests geschrieben
 - [Tests]
@@ -78,25 +92,7 @@ Persönliches Changelog für [Name], Rolle: [Rollenbezeichnung]
 ```
 
 ### Mergekonflikt(e)
-- [Konflikte]
-
----
-
-## [v0.5] - [Datum]
-
-### Implementiert
-- [Feature/Fix]
-
-### Tests geschrieben
-- [Tests]
-
-### Commits
-```
-- [Commits]
-```
-
-### Mergekonflikt(e)
-- [Konflikte]
+- keine Konflikte
 
 ---
 

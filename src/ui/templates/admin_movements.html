@@ -3,6 +3,10 @@
 {% block content %}
 <h2>Lagerbewegungen - Nachvollziehbare Übersicht</h2>
 
+<div class="movement-actions">
+  <a class="btn" href="{{ url_for('admin.movement_statistics') }}">Statistik anzeigen</a>
+</div>
+
 <!-- Gesamtstatistiken -->
 <h3>Gesamtstatistiken</h3>
 <div class="stats-grid">

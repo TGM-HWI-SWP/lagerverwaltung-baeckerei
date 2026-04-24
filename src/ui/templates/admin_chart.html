@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+
+{% if img_data %}
+<div class="chart-container">
+  <img src="data:image/png;base64,{{ img_data }}" alt="{{ title }}" />
+</div>
+{% else %}
+<p>Keine Daten verfügbar für die Diagrammanzeige.</p>
+{% endif %}
+
+<a class="btn" href="{{ back_url }}">Zurück zu Statistiken</a>
+{% endblock %}

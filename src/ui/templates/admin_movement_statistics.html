@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Bewegungsstatistik{% endblock %}
+{% block content %}
+<h2>Statistik: Meistgekaufte Produkte & Kaufzeitpunkte</h2>
+
+{% if img_data %}
+<div class="chart-container">
+  <img src="data:image/png;base64,{{ img_data }}" alt="Bewegungsstatistik" />
+</div>
+{% else %}
+<p>Keine Verkaufsdaten vorhanden, um die Statistik anzuzeigen.</p>
+{% endif %}
+
+<h3>Zusatzdaten</h3>
+{% if sales_by_product %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt</th>
+      <th>Verkaufte Menge</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product, amount in sales_by_product.items() %}
+    <tr>
+      <td>{{ product }}</td>
+      <td>{{ amount }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<a class="btn" href="{{ url_for('admin.movements') }}">Zurück zu Bewegungen</a>
+{% endblock %}

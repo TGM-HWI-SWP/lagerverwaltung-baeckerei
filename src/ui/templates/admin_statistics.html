@@ -2,9 +2,208 @@
 {% block title %}Statistik{% endblock %}
 {% block content %}
 <h2>Statistik</h2>
-<ul class="stats-list">
-  <li>Gesamtanzahl Einheiten: {{ total_units }}</li>
-  <li>Gesamtwert Lager: {{ "%.2f" | format(total_value) }} €</li>
+<p><a class="btn" href="{{ url_for('admin.pdf_report') }}" style="background-color: #28a745; color: white;">📄 PDF-Report herunterladen</a></p>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Produkte</h3>
+    <p>{{ total_products }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Gesamtanzahl Einheiten</h3>
+    <p>{{ total_units }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Gesamtwert Lager</h3>
+    <p>{{ "%.2f" | format(total_value) }} €</p>
+  </div>
+  <div class="stat-card">
+    <h3>Durchschnittlicher Lagerwert</h3>
+    <p>{{ "%.2f" | format(average_price) }} € / Einheit</p>
+  </div>
+  <div class="stat-card">
+    <h3>Durchschnittlicher Bestand</h3>
+    <p>{{ "%.2f" | format(average_stock) }} Einheiten / Produkt</p>
+  </div>
+</div>
+<p><a class="btn" href="{{ url_for('admin.inventory_chart') }}">Diagramm anzeigen für Lagerkennzahlen</a></p>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Bewegungen insgesamt</h3>
+    <p>{{ total_movements }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Einlagerungen gesamt</h3>
+    <p>{{ total_incoming }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Auslagerungen gesamt</h3>
+    <p>{{ total_outgoing }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Bewegte Produkte</h3>
+    <p>{{ moved_products }}</p>
+  </div>
+</div>
+<p><a class="btn" href="{{ url_for('admin.movement_chart') }}">Diagramm anzeigen für Bewegungsstatistik</a></p>
+
+<h3>Top Produkte nach Lagerwert</h3>
+<p><a class="btn" href="{{ url_for('admin.top_products_chart') }}">Diagramm anzeigen</a></p>
+{% if top_by_value %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt</th>
+      <th>Menge</th>
+      <th>Gesamtwert</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in top_by_value %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ "%.2f" | format(item.total_value) }} €</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Produkte vorhanden.</p>
+{% endif %}
+
+<h3>Top Produkte nach Menge</h3>
+<p><a class="btn" href="{{ url_for('admin.top_products_chart') }}">Graph anzeigen</a></p>
+{% if top_by_quantity %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt</th>
+      <th>Menge</th>
+      <th>Preis</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in top_by_quantity %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ "%.2f" | format(item.price) }} €</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Produkte vorhanden.</p>
+{% endif %}
+
+<h3>Top Bewegte Produkte</h3>
+<p><a class="btn" href="{{ url_for('admin.movement_chart') }}">Graph anzeigen</a></p>
+{% if top_moved_products %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt</th>
+      <th>Anzahl Bewegungen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in top_moved_products %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Bewegungsdaten verfügbar.</p>
+{% endif %}
+
+<h3>Top Verkäufe nach Menge <a class="btn" href="{{ url_for('admin.movement_statistics') }}">Graph anzeigen</a></h3>
+{% if top_sold_products %}
+<table>
+  <thead>
+    <tr>
+      <th>Produkt</th>
+      <th>Verkaufte Einheiten</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in top_sold_products %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.sold }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Verkaufsdaten verfügbar.</p>
+{% endif %}
+
+<h3>Produktkategorien</h3>
+<p><a class="btn" href="{{ url_for('admin.categories_chart') }}">Diagramm anzeigen</a></p>
+{% if categories %}
+<table>
+  <thead>
+    <tr>
+      <th>Kategorie</th>
+      <th>Anzahl Produkte</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for name, count in categories.items() %}
+    <tr>
+      <td>{{ name }}</td>
+      <td>{{ count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<h3>Produktübersicht</h3>
+<p><a class="btn" href="{{ url_for('admin.inventory_chart') }}">Diagramm anzeigen</a></p>
+{% if product_reports %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Kategorie</th>
+      <th>Bestand</th>
+      <th>Preis</th>
+      <th>Wert</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in product_reports %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.category or 'Unkategorisiert' }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ "%.2f" | format(item.price) }} €</td>
+      <td>{{ "%.2f" | format(item.total_value) }} €</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Keine Produkte vorhanden.</p>
+{% endif %}
+
+{% if low_stock %}
+<h3>Niedriger Bestand</h3>
+<p><a class="btn" href="{{ url_for('admin.low_stock_chart') }}">Diagramm anzeigen für niedrigen Bestand</a></p>
+<ul>
+  {% for item in low_stock %}
+  <li>{{ item.name }} ({{ item.quantity }} Stück)</li>
+  {% endfor %}
 </ul>
+{% endif %}
+
 <a class="btn" href="{{ url_for('admin.dashboard') }}">Zurück</a>
 {% endblock %}

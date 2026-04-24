@@ -14,6 +14,25 @@ class WarehouseService:
     def __init__(self, repository: RepositoryPort):
         self.repository = repository
         self.warehouse = Warehouse("Hauptlager")
+        self._load_repository_state()
+
+    def _load_repository_state(self) -> None:
+        """Lade Produkt- und Bewegungsdaten aus dem Repository ins Warehouse."""
+        products = self.repository.load_all_products()
+        for product in products.values():
+            try:
+                self.warehouse.add_product(product)
+            except ValueError:
+                # Produkt existiert bereits im Warehouse, sonst ignorieren
+                pass
+
+        movements = self.repository.load_movements()
+        for movement in movements:
+            try:
+                self.warehouse.record_movement(movement)
+            except ValueError:
+                # Falls ein Produkt nicht im Warehouse existiert, überspringen
+                pass
 
     def create_product(
         self,
