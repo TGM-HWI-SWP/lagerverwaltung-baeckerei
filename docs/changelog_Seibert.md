@@ -5,7 +5,7 @@ Persönliches Changelog für [Laurin Seibert], Rolle: [3]
 
 
 
-## [v0.4] - [16.04.2026]
+## [v0.1] - [16.04.2026]
 
 ### Implementiert
 - Implementierung des Bewegungsreports
@@ -26,14 +26,14 @@ Persönliches Changelog für [Laurin Seibert], Rolle: [3]
 ## [v0.2] - [24.04.2026]
 
 ### Implementiert
-- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
+- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik/PDF ausdruckbar)
 
 ### Tests geschrieben
 - noch keine geschrieben
 
 ### Commits
 
-- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
+- Erweitere Admin-Statistiken mit Diagrammen und PDF-Export
 
 
 ### Mergekonflikt(e)
@@ -41,88 +41,16 @@ Persönliches Changelog für [Laurin Seibert], Rolle: [3]
 
 ---
 
-## [v0.3] - [Datum]
 
-### Implementiert
-- [Feature/Fix 1]
-
-### Tests geschrieben
-- [Tests]
-
-### Commits
-```
-- [Commits]
-```
-
-### Mergekonflikt(e)
-- keine Konflikte
-
----
-
-## [v0.4] - [16.04.2026]
-
-### Implementiert
-- Implementierung des Bewegungsreports
-- Implementierung jeglicher Statisiken
-
-### Tests geschrieben
-- 
-
-### Commits
-
-- Report B eingefügt (unter Reiter Bewegung)
-- Statistiken eingefügt (Unter Reiter Statistik und Bewegung/Statisik)
-
-### Mergekonflikt(e)
-- keine Konflike in meinem zusammenhang
-
----
-
-## [v0.5] - [24.04.2026]
-
-### Implementiert
-- Implementierung jeglicher Statisiken
-
-### Tests geschrieben
-- [Tests]
-
-### Commits
-```
-- [Commits]
-```
-
-### Mergekonflikt(e)
-- keine Konflikte
-
----
-
-## [v1.0] - [Datum]
-
-### Implementiert
-- [Feature/Fix]
-
-### Tests geschrieben
-- [Tests]
-
-### Commits
-```
-- [Commits]
-```
-
-### Mergekonflikt(e)
-- [Konflikte]
-
----
 
 ## Zusammenfassung
 
-**Gesamt implementierte Features:** [Anzahl]  
-**Gesamt geschriebene Tests:** [Anzahl]  
-**Gesamt Commits:** [Anzahl]  
-**Größte Herausforderung:** [Beschreibung]  
-**Schönste Code-Zeile:** [Code-Snippet]
-
+**Gesamt implementierte Features:** [8]  
+**Gesamt geschriebene Tests:** [-]  
+**Gesamt Commits:** [2]  
+**Größte Herausforderung:** [Verstehen was ich machen muss und ne strategie zu finden wie ich es anstelle]  
+**Schönste Code-Zeile:** [-]
 ---
 
-**Changelog erstellt von:** [Name]  
-**Letzte Aktualisierung:** [Datum]
+**Changelog erstellt von:** [Laurin Seibert]  
+**Letzte Aktualisierung:** [24.04.2026]
